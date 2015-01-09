@@ -296,8 +296,6 @@ fi
 
 # remove absolute paths from text search files (if they exist)
 perl -w -e '
-    @ARGV = grep { `file $_` =~ m,ASCII C program text, } @ARGV;
-    exit(0) unless @ARGV;
     $^I = ".bak";
     while(<>) {
         s,[\S/]+/,,g if m,^GROUP,;

@@ -585,6 +585,7 @@ TXT
     zlib         => sub { my @f = (glob('/usr/lib/libz.so*'),
                                    glob('/lib/libz.so*'),
                                    glob('/lib64/libz.so*'),
+                                   glob('/lib/i386-linux-gnu/libz.so*'),
                                    glob('/usr/lib/i386-linux-gnu/libz.so*'),
                                    glob('/usr/lib32/libz.so*'),
                                    glob('/usr/lib/x86_64-linux-gnu/libz.so*') ); @f > 1 ? 1 : 0 },
