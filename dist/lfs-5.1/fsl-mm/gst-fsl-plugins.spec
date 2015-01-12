@@ -1,13 +1,14 @@
 %define pfx /opt/freescale/rootfs/%{_target_cpu}
 Summary         : Gstreamer Freescale Plugin
 Name            : gst-fsl-plugins
-Version         : 3.0.7
+Version         : 3.0.11
 Release         : 1
 License         : LGPL
 Vendor          : Freescale Semiconductor
 Packager        : Sario Hu
 Group           : Applications/System
-Source          : %{name}-%{version}-2.tar.gz
+Source          : %{name}-%{version}.tar.gz
+Patch1		: %{name}-%{version}-configure.patch
 BuildRoot       : %{_tmppath}/%{name}
 Prefix          : %{pfx}
 
@@ -16,6 +17,7 @@ Prefix          : %{pfx}
 
 %Prep
 %setup
+%patch1 -p1
 
 %Build
 export PKG_CONFIG="`which pkg-config` --static "

@@ -1,13 +1,13 @@
 %define pfx /opt/freescale/rootfs/%{_target_cpu}
 Summary         : Freescale standard parser
 Name            : libfslparser 
-Version         : 3.0.7
+Version         : 3.0.11
 Release         : 1
 License         : LGPL
 Vendor          : Freescale Semiconductor
 Packager        : Sario Hu
 Group           : Applications/System
-Source          : %{name}-%{version}-2.tar.gz
+Source          : %{name}-%{version}.tar.gz
 BuildRoot       : %{_tmppath}/%{name}
 Prefix          : %{pfx}
 

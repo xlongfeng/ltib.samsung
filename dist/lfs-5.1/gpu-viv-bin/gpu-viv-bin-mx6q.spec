@@ -2,8 +2,8 @@
 
 Summary         : GPU driver and app for mx6q
 Name            : gpu-viv-bin-mx6q
-Version         : 3.0.35
-Release         : 4.1.0
+Version         : 3.0.101
+Release         : 4.1.1
 License         : Proprietary
 Vendor          : Freescale
 Packager        : Richard Zhao

@@ -2,8 +2,8 @@
 
 Summary         : Firmware for imx platform
 Name            : firmware-imx
-Version         : 3.0.35
-Release         : 4.1.0
+Version         : 3.0.101
+Release         : 4.1.1
 License         : Freescale EULA
 Vendor          : Freescale and third party
 Packager        : Alan Tull

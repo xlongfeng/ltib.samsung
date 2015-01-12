@@ -398,6 +398,11 @@ choice
         bool "Linux 3.0.35-imx"
         help
             This is the 3.0.35 kernel and patches for MXC and i.MX platforms.
+	
+	config KERNEL_30101
+        bool "Linux 3.0.101-imx"
+        help
+            This is the 3.0.101 kernel and patches for MXC and i.MX platforms.
 
     config KERNEL_3015
         bool "Linux 3.0.15-imx"
@@ -442,6 +447,7 @@ config PKG_KERNEL
     string
     default "kernel-3.5.7"          if KERNEL_3507
     default "kernel-3.0.35"         if KERNEL_3035
+    default "kernel-3.0.101"        if KERNEL_30101
     default "kernel-3.0.15"         if KERNEL_3015
     default "kernel-2.6.38"         if KERNEL_38
     default "kernel-2.6.35"         if KERNEL_35

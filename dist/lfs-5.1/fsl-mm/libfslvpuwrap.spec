@@ -1,13 +1,13 @@
 %define pfx /opt/freescale/rootfs/%{_target_cpu}
 Summary         : Freescale vpu-wrapper library
 Name            : libfslvpuwrap 
-Version         : 1.0.35
+Version         : 1.0.46
 Release         : 1
 License         : LGPL
 Vendor          : Freescale Semiconductor
 Packager        : Sario Hu
 Group           : Applications/System
-Source          : %{name}-%{version}-2.tar.gz
+Source          : %{name}-%{version}.tar.gz
 BuildRoot       : %{_tmppath}/%{name}
 Prefix          : %{pfx}
 

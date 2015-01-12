@@ -2,8 +2,8 @@
 
 Summary         : platform specific libraries for imx platform
 Name            : imx-vpu-lib
-Version         : 3.0.35
-Release         : 4.1.0
+Version         : 3.0.101
+Release         : 4.1.1
 License         : Freescale Private
 Vendor          : Freescale
 Packager        : Terry Lv

@@ -9,7 +9,7 @@ Vendor          : Freescale
 Packager        : Stuart Hughes/Kurt Mahan
 Group           : System Environment/Libraries
 Source          : glib-%{version}.tar.bz2
-Patch1          : glib2-2.12.11-relink.patch
+Patch1          : glib2-2.12.1-atomic.patch
 BuildRoot       : %{_tmppath}/%{name}
 Prefix          : %{pfx}
 
@@ -18,7 +18,7 @@ Prefix          : %{pfx}
 
 %Prep
 %setup -n glib-%{version}
-#%patch1 -p1
+%patch1 -p1
 
 %Build
 # prevent configure from trying to compile and
