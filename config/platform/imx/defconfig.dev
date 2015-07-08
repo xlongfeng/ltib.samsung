@@ -183,7 +183,7 @@ CONFIG_PKG_BUSYBOX_PRECONFIG="busybox.config"
 # CONFIG_PKG_DHCP is not set
 # CONFIG_PKG_DB1 is not set
 # CONFIG_PKG_DB4 is not set
-# CONFIG_PKG_DBUS is not set
+CONFIG_PKG_DBUS=y
 # CONFIG_PKG_DBUS_GLIB is not set
 # CONFIG_PKG_DEV is not set
 # CONFIG_PKG_MDEV is not set

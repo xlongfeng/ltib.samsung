@@ -246,6 +246,12 @@ for i in 0 1 2; do
     fi
 done
 
+if [ ! -f /usr/var/lib/dbus/machine-id ]
+then
+    echo "Generating machine id for dbus"
+    dbus-uuidgen --ensure=/usr/var/lib/dbus/machine-id
+fi
+
 EOF
 chmod +x $RPM_BUILD_ROOT/%{pfx}/etc/rc.d/rc.local
 

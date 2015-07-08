@@ -2,7 +2,7 @@
 
 Summary         : Qt
 Name            : qt-everywhere-opensource-src
-Version         : 4.8.6
+Version         : 5.4.2
 Release         : 0
 License         : GNU GPL
 Vendor          : Freescale
@@ -11,7 +11,7 @@ Group           : System Environment/Libraries
 Source          : %{name}-%{version}.tar.gz
 BuildRoot       : %{_tmppath}/%{name}
 Prefix          : %{pfx}
-URL             : http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.8.6.tar.gz
+URL             : http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-5.4.2.tar.gz
 
 %Description
 %{summary}
@@ -21,143 +21,42 @@ URL             : http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src
 
 #Creating mkspec
 
-mkdir mkspecs/qws/linux-g++-mx
-initscript=mkspecs/qws/linux-g++-mx/qmake.conf
+XPLATFORM=qtbase/mkspecs/linux-none-arm-gnueabi-g++
+
+mkdir $XPLATFORM
+
+initscript=$XPLATFORM/qmake.conf
 cat > $initscript << EOF
 #
-# qmake configuration for building with arm-none-linux-gnueabi-g++
+# qmake configuration for building with arm-linux-gnueabi-g++
 #
 
-QMAKE_CC		= arm-none-linux-gnueabi-gcc
-QMAKE_CFLAGS		+= -pipe
-QMAKE_CFLAGS_DEPS	+= -M
-QMAKE_CFLAGS_WARN_ON	+= -Wall -W
-QMAKE_CFLAGS_WARN_OFF	+= -w
-QMAKE_CFLAGS_RELEASE	+= -O2
-QMAKE_CFLAGS_DEBUG	+= -g
-QMAKE_CFLAGS_SHLIB	+= -fPIC
-QMAKE_CFLAGS_STATIC_LIB	+= -fPIC
-QMAKE_CFLAGS_YACC	+= -Wno-unused -Wno-parentheses
-QMAKE_CFLAGS_HIDESYMS   += -fvisibility=hidden
-QMAKE_CFLAGS_PRECOMPILE += -x c-header -c \${QMAKE_PCH_INPUT} -o \${QMAKE_PCH_OUTPUT}
-QMAKE_CFLAGS_USE_PRECOMPILE += -include \${QMAKE_PCH_OUTPUT_BASE}
-
-QMAKE_CXX		= arm-none-linux-gnueabi-g++
-QMAKE_CXXFLAGS		+= \$\$QMAKE_CFLAGS
-QMAKE_CXXFLAGS_DEPS	+= \$\$QMAKE_CFLAGS_DEPS
-QMAKE_CXXFLAGS_WARN_ON	+= \$\$QMAKE_CFLAGS_WARN_ON
-QMAKE_CXXFLAGS_WARN_OFF	+= \$\$QMAKE_CFLAGS_WARN_OFF
-QMAKE_CXXFLAGS_RELEASE	+= \$\$QMAKE_CFLAGS_RELEASE
-QMAKE_CXXFLAGS_DEBUG	+= \$\$QMAKE_CFLAGS_DEBUG
-QMAKE_CXXFLAGS_SHLIB	+= \$\$QMAKE_CFLAGS_SHLIB
-QMAKE_CXXFLAGS_STATIC_LIB += \$\$QMAKE_CFLAGS_STATIC_LIB
-QMAKE_CXXFLAGS_YACC	+= \$\$QMAKE_CFLAGS_YACC
-QMAKE_CXXFLAGS_HIDESYMS += \$\$QMAKE_CFLAGS_HIDESYMS -fvisibility-inlines-hidden
-QMAKE_CXXFLAGS_PRECOMPILE += -x c++-header -c \${QMAKE_PCH_INPUT} -o \${QMAKE_PCH_OUTPUT}
-QMAKE_CXXFLAGS_USE_PRECOMPILE = \$\$QMAKE_CFLAGS_USE_PRECOMPILE
-
-QMAKE_LINK		= arm-none-linux-gnueabi-g++
-QMAKE_LINK_SHLIB	= arm-none-linux-gnueabi-g++
-QMAKE_LINK_C		= arm-none-linux-gnueabi-gcc
-QMAKE_LINK_C_SHLIB	= arm-none-linux-gnueabi-gcc
-QMAKE_LFLAGS		+=
-QMAKE_LFLAGS_RELEASE	+= -Wl,-O1
-QMAKE_LFLAGS_DEBUG	+=
-QMAKE_LFLAGS_APP	+=
-QMAKE_LFLAGS_SHLIB	+= -shared
-QMAKE_LFLAGS_PLUGIN	+= \$\$QMAKE_LFLAGS_SHLIB
-QMAKE_LFLAGS_SONAME	+= -Wl,-soname,
-QMAKE_LFLAGS_THREAD	+=
-QMAKE_LFLAGS_NOUNDEF	+= -Wl,--no-undefined
-QMAKE_LFLAGS_RPATH	= -Wl,-rpath,
-
-QMAKE_PCH_OUTPUT_EXT    = .gch
-
-# -Bsymbolic-functions (ld) support
-QMAKE_LFLAGS_BSYMBOLIC_FUNC = -Wl,-Bsymbolic-functions
-QMAKE_LFLAGS_DYNAMIC_LIST = -Wl,--dynamic-list,
-
-QMAKE_CFLAGS_THREAD	+= -D_REENTRANT
-QMAKE_CXXFLAGS_THREAD	+= \$\$QMAKE_CFLAGS_THREAD
-
-QMAKE_INCDIR          = $RPM_BUILD_DIR/../../rootfs/usr/include $RPM_BUILD_DIR/../../rootfs/usr/include/glib-2.0 \
-			$RPM_BUILD_DIR/../../rootfs/usr/lib/glib-2.0/include/ $RPM_BUILD_DIR/../../rootfs/usr/include/gstreamer-0.10/ \
-			$RPM_BUILD_DIR/../../rootfs/usr/include/libxml2/ $RPM_BUILD_DIR/../../rootfs/usr/include/freetype2
-QMAKE_LIBDIR          = $RPM_BUILD_DIR/../../rootfs/usr/lib
-QMAKE_INCDIR_X11      =
-QMAKE_LIBDIR_X11      =
-QMAKE_INCDIR_QT       = \$\$[QT_INSTALL_HEADERS]
-QMAKE_LIBDIR_QT       = \$\$[QT_INSTALL_LIBS]
-QMAKE_INCDIR_OPENGL   = $RPM_BUILD_DIR/../../rootfs/usr/include/GL
-QMAKE_LIBDIR_OPENGL   = $RPM_BUILD_DIR/../../rootfs/usr/lib
-QMAKE_INCDIR_POWERVR  = $RPM_BUILD_DIR/../../rootfs/usr/include
-QMAKE_INCDIR_OPENGL_ES1 = $RPM_BUILD_DIR/../../rootfs/usr/include/GLES
-QMAKE_LIBDIR_OPENGL_ES1 = $RPM_BUILD_DIR/../../rootfs/usr/lib
-QMAKE_INCDIR_OPENGL_ES1CL = $RPM_BUILD_DIR/../../rootfs/usr/include/GLES
-QMAKE_LIBDIR_OPENGL_ES1CL = $RPM_BUILD_DIR/../../rootfs/usr/lib
-QMAKE_INCDIR_OPENGL_ES2 = $RPM_BUILD_DIR/../../rootfs/usr/include/GLES2
-QMAKE_LIBDIR_OPENGL_ES2 = $RPM_BUILD_DIR/../../rootfs/usr/lib
-QMAKE_INCDIR_EGL      = $RPM_BUILD_DIR/../../rootfs/usr/include/GL
-QMAKE_LIBDIR_EGL      = $RPM_BUILD_DIR/../../rootfs/usr/lib
-QMAKE_INCDIR_OPENVG   =
-QMAKE_LIBDIR_OPENVG   =
-
-QMAKE_LIBS            = -lglib-2.0 -lgthread-2.0 -lz -lgmodule-2.0 -lgobject-2.0 -lts -lfreetype $XTRA_OPTS_CONFIG
-QMAKE_LIBS_DYNLOAD    = -ldl
-QMAKE_LIBS_X11        =
-QMAKE_LIBS_X11SM      =
-QMAKE_LIBS_NIS        = -lnsl
-QMAKE_LIBS_EGL        = -lEGL
-QMAKE_LIBS_OPENGL     = -lGLU -lGL
-QMAKE_LIBS_OPENGL_QT  = -lGL
-QMAKE_LIBS_OPENGL_ES1 = -lGLESv1_CM
-QMAKE_LIBS_OPENGL_ES1CL = -lGLES_CL
-QMAKE_LIBS_OPENGL_ES2 = -lGLESv2
-QMAKE_LIBS_OPENVG     = -lOpenVG
-QMAKE_LIBS_THREAD     = -lpthread
-QMAKE_LIBS_EGL	      = -lEGL
-
-QMAKE_MOC             = \$\$[QT_INSTALL_BINS]/moc
-QMAKE_UIC             = \$\$[QT_INSTALL_BINS]/uic
-
-QMAKE_AR              = arm-none-linux-gnueabi-ar cqs
-QMAKE_OBJCOPY         = arm-none-linux-gnueabi-objcopy
-QMAKE_RANLIB          = arm-none-linux-gnueabi-ranlib
-
-QMAKE_TAR             = tar -cf
-QMAKE_GZIP            = gzip -9f
-
-QMAKE_COPY            = cp -f
-QMAKE_COPY_FILE       = \$(COPY)
-QMAKE_COPY_DIR        = \$(COPY) -r
-QMAKE_MOVE            = mv -f
-QMAKE_DEL_FILE        = rm -f
-QMAKE_DEL_DIR         = rmdir
-QMAKE_STRIP           = arm-none-linux-gnueabi-strip
-QMAKE_STRIPFLAGS_LIB += --strip-unneeded
-QMAKE_CHK_DIR_EXISTS  = test -d
-QMAKE_MKDIR           = mkdir -p
-QMAKE_INSTALL_FILE    = install -m 644 -p
-QMAKE_INSTALL_PROGRAM = install -m 755 -p
-
 MAKEFILE_GENERATOR      = UNIX
-TEMPLATE                = app
-CONFIG                 += qt warn_on release incremental link_prl
-QT                     += core gui network
+CONFIG                 += incremental
 QMAKE_INCREMENTAL_STYLE = sublib
 
+include(../common/linux.conf)
+include(../common/gcc-base-unix.conf)
+include(../common/g++-unix.conf)
+
+# modifications to g++.conf
+QMAKE_CC                = arm-none-linux-gnueabi-gcc
+QMAKE_CXX               = arm-none-linux-gnueabi-g++
+QMAKE_LINK              = arm-none-linux-gnueabi-g++
+QMAKE_LINK_SHLIB        = arm-none-linux-gnueabi-g++
+
+# modifications to linux.conf
+QMAKE_AR                = arm-none-linux-gnueabi-ar cqs
+QMAKE_OBJCOPY           = arm-none-linux-gnueabi-objcopy
+QMAKE_NM                = arm-none-linux-gnueabi-nm -P
+QMAKE_STRIP             = arm-none-linux-gnueabi-strip
 load(qt_config)
 EOF
 
-chmod 744 $initscript
-
-initscript=mkspecs/qws/linux-g++-mx/qplatformdefs.h
+initscript=$XPLATFORM/qplatformdefs.h
 cat > $initscript << EOF
-
-#include "../../linux-g++/qplatformdefs.h"
-
+#include "../linux-g++/qplatformdefs.h"
 EOF
-chmod 744 $initscript
 
 %Build
 
@@ -172,68 +71,132 @@ unset PLATFORM
 
 #Checking what packages are available
 
-export XTRA_OPTS=""
-export XTRA_OPTS_CONFIG=""
-
-if [ -n "$PKG_QT_PHONON" ]
-then
-    export XTRA_OPTS="$XTRA_OPTS -multimedia -phonon -phonon-backend -lgstreamer-0.10"
-    export XTRA_OPTS_CONFIG="$XTRA_OPTS_CONFIG -lgstreamer-0.10 -lxml2 -lasound"
-fi
-
-#if PKG_AMD_GPU_BIN_MX51 is already installed, uncomment the following line to add OpenGLES 2 support
-#export XTRA_OPTS_CONFIG="$XTRA_OPTS_CONFIG -lGLESv2 -lEGL -lgsl -lc2d -lpanel2"
-
-#if PKG_MBX_BIN is already installed, uncomment the following line to add OpenGLES 1.1 support
-#export XTRA_OPTS_CONFIG="$XTRA_OPTS_CONFIG -lEGL -lEGL"
-
-
-#if PKG_AMD_GPU_BIN_MX51 is already installed, uncomment the following line to add OpenGLES 2 support
-#export XTRA_OPTS="$XTRA_OPTS -opengl es2"
-
-#if PKG_MBX_BIN is already installed, uncomment the following line to add OpenGLES 1.1 support
-#export XTRA_OPTS="$XTRA_OPTS -opengl es1"
-
-THIRD_PARTY_LIBRARIES='-no-libtiff -no-libmng -no-libjpeg'
-
-ADDITIONAL_OPTIONS='-nomake tools -nomake examples -nomake demos -nomake docs -nomake translations -silent -no-nis -no-cups -no-iconv -no-pch -no-dbus -no-separate-debug-info'
-
-QT_FOR_EMBEDDED_LINUX='-embedded arm -xplatform qws/linux-g++-mx -no-armfpa -little-endian -host-little-endian -qconfig dist -depths 16'
-
-./configure --prefix=%{_prefix} \
+CONFIGURE_OPTIONS=" \
 	-release \
 	-opensource \
 	-confirm-license \
-	-shared \
-	-fast \
-	-v \
 	-no-largefile \
-	-no-qt3support \
-	-no-xmlpatterns \
-	-no-multimedia \
-	-no-audio-backend \
-	-no-phonon \
-	-no-phonon-backend \
-	-no-svg \
-	-no-webkit \
-	-no-javascript-jit \
-	-no-script \
-	-no-scripttools \
-	-no-declarative \
-	-no-declarative-debug \
-	$THIRD_PARTY_LIBRARIES \
-	$ADDITIONAL_OPTIONS \
-	$QT_FOR_EMBEDDED_LINUX \
-	$XTRA_OPTS
+	-no-qml-debug \
+	"
+
+THIRD_PARTY_LIBRARIES=" \
+	-no-mtdev \
+	-no-libjpeg \
+	-no-harfbuzz \
+	"
+
+NO_SKIP_MODULES="qtbase qtserialport"
+
+SKIP_MODULES=" \
+	-skip qtandroidextras \
+	-skip qtmacextras \
+	-skip qtx11extras \
+	-skip qtsvg \
+	-skip qtxmlpatterns \
+	-skip qtdeclarative \
+	-skip qtquickcontrols \
+	-skip qtmultimedia \
+	-skip qtwinextras \
+	-skip qtactiveqt \
+	-skip qtlocation \
+	-skip qtsensors \
+	-skip qtconnectivity \
+	-skip qtwebsockets \
+	-skip qtwebchannel \
+	-skip qtwebkit \
+	-skip qttools \
+	-skip qtwebkit-examples \
+	-skip qtimageformats \
+	-skip qtgraphicaleffects \
+	-skip qtscript \
+	-skip qtquick1 \
+	-skip qtwayland \
+	-skip qtenginio \
+	-skip qtwebengine \
+	-skip qttranslations \
+	-skip qtdoc \
+	"
+
+NO_FILE_IO_FEATURE=" \
+	-no-feature-DOM
+	"
+
+NO_WIDGETS_FEATURE=" \
+	"
+
+NO_DIALOGS_FEATURE=" \
+	-no-feature-FONTDIALOG \
+	-no-feature-PRINTDIALOG \
+	-no-feature-PRINTPREVIEWDIALOG \
+	-no-feature-WIZARD \
+	"
+
+NO_ITEMVIEWS_FEATURE=" \
+	"
+
+NO_STYLES_FEATURE=" \
+	-no-feature-STYLE_FUSION \
+	-no-feature-STYLE_WINDOWSXP \
+	-no-feature-STYLE_WINDOWSVISTA \
+	-no-feature-STYLE_WINDOWSCE \
+	-no-feature-STYLE_WINDOWSMOBILE \
+	"
+
+NO_PAINTING_FEATURE=" \
+	-no-feature-PRINTER \
+	-no-feature-CUPS \
+	"
+
+NO_NETWORKING_FEATURE=" \
+	-no-feature-FTP \
+	"
+
+NO_UTILITIES_FEATURE=" \
+	-no-feature-DESKTOPSERVICES \
+	-no-feature-SYSTEMTRAYICON \
+	-no-feature-GESTURES \
+	"
+
+NO_FEATURES=" \
+	$NO_FILE_IO_FEATURE \
+	$NO_WIDGETS_FEATURE \
+	$NO_DIALOGS_FEATURE \
+	$NO_ITEMVIEWS_FEATURE \
+	$NO_STYLES_FEATURE \
+	$NO_PAINTING_FEATURE \
+	$NO_NETWORKING_FEATURE \
+	$NO_UTILITIES_FEATURE \
+	"
+
+ADDITIONAL_OPTIONS=" \
+	-nomake examples \
+	-nomake tools \
+	$SKIP_MODULES \
+	-no-nis \
+	-no-cups \
+	-no-iconv \
+	-no-evdev \
+	-no-icu \
+	-no-fontconfig \
+	-no-use-gold-linker \
+	-no-xcb \
+	-no-eglfs
+	-no-directfb \
+	-no-kms \
+	-qpa linuxfb \
+	-xplatform linux-none-arm-gnueabi-g++ \
+	$NO_FEATURES
+	"
+
+./configure --prefix=%{_prefix} $CONFIGURE_OPTIONS $THIRD_PARTY_LIBRARIES $ADDITIONAL_OPTIONS
 
 make
 
 %Install
 
 export PATH=$UNSPOOF_PATH
-install -d $RPM_BUILD_ROOT/%{pfx}/usr/lib
 
-cp -a lib/* $RPM_BUILD_ROOT/%{pfx}/usr/lib
+make install INSTALL_ROOT=$RPM_BUILD_ROOT/%{pfx}
 
 export PATH=$SPOOF_PATH
 

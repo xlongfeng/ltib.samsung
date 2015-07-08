@@ -751,6 +751,7 @@ fi
 if [ "$pcf->{DEPLOYMENT_RM_DOCS}" = "y" ]
 then
     echo "removing man files and directories"
+    rm -rf $stage/usr/doc
     rm -rf $stage/usr/local/man
     rm -rf $stage/usr/man
 	rm -rf $stage/usr/share/doc
@@ -822,13 +823,25 @@ then
        stripall -s $v $stage
     fi
 fi
-echo "removing useless firmwares"
+echo "removing redundant files"
+
 rm -rf $stage/lib/firmware/ar3k
 rm -rf $stage/lib/firmware/ath6k/AR6003/hw1.0
 rm -rf $stage/lib/firmware/ath6k/AR6003/hw2.0
 rm -rf $stage/lib/firmware/ath6k/AR6102
 rm -rf $stage/lib/firmware/sdma
 rm -rf $stage/lib/firmware/vpu
+
+rm -rf $stage/usr/bin/moc
+rm -rf $stage/usr/bin/qdbuscpp2xml
+rm -rf $stage/usr/bin/qdbusxml2cpp
+rm -rf $stage/usr/bin/qdoc
+rm -rf $stage/usr/bin/qlalr
+rm -rf $stage/usr/bin/qmake
+rm -rf $stage/usr/bin/rcc
+rm -rf $stage/usr/bin/uic
+rm -rf $stage/usr/mkspecs
+
 TXT
 
     # calculate the size of the rootfs (based on calcs in buildroot)
