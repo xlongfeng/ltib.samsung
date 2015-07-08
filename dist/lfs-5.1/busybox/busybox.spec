@@ -1,4 +1,3 @@
-%define base %(echo %{_prefix} | sed -e s,/usr.*$,,)
 %define pfx /opt/freescale/rootfs/%{_target_cpu}
 
 Summary         : A small executable that replaces many UNIX utilities
@@ -46,35 +45,35 @@ make HOSTCC="$BUILDCC" $MAKE_EXTRA
 
 %Install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/%{pfx}/%{base}/bin
-make HOSTCC="$BUILDCC" CONFIG_PREFIX=$RPM_BUILD_ROOT/%{pfx}/%{base} install
+install -d $RPM_BUILD_ROOT/%{pfx}/bin
+make HOSTCC="$BUILDCC" CONFIG_PREFIX=$RPM_BUILD_ROOT/%{pfx} install
 for i in pidof ip
 do
     
-    if [ -f $RPM_BUILD_ROOT/%{pfx}/%{base}/bin/$i ]
+    if [ -f $RPM_BUILD_ROOT/%{pfx}/bin/$i ]
     then
-        rm $RPM_BUILD_ROOT/%{pfx}/%{base}/bin/$i
-        ln -sf ../bin/busybox $RPM_BUILD_ROOT/%{pfx}/%{base}/sbin/$i
+        rm $RPM_BUILD_ROOT/%{pfx}/bin/$i
+        ln -sf ../bin/busybox $RPM_BUILD_ROOT/%{pfx}/sbin/$i
     fi
 done
-install -d $RPM_BUILD_ROOT/%{pfx}/%{base}/etc/rc.d/init.d
+install -d $RPM_BUILD_ROOT/%{pfx}/etc/rc.d/init.d
 for i in run log
 do
-    install -d $RPM_BUILD_ROOT/%{pfx}/%{base}/var/$i
+    install -d $RPM_BUILD_ROOT/%{pfx}/var/$i
 done
-touch $RPM_BUILD_ROOT/%{pfx}/%{base}/var/run/utmp
-touch $RPM_BUILD_ROOT/%{pfx}/%{base}/var/log/wtmp
-cat <<EOF > $RPM_BUILD_ROOT/%{pfx}/%{base}/etc/busybox.conf
+touch $RPM_BUILD_ROOT/%{pfx}/var/run/utmp
+touch $RPM_BUILD_ROOT/%{pfx}/var/log/wtmp
+cat <<EOF > $RPM_BUILD_ROOT/%{pfx}/etc/busybox.conf
 [SUID]
 su = ssx root.root
 passwd = ssx root.root
 EOF
-chmod 644 $RPM_BUILD_ROOT/%{pfx}/%{base}/etc/busybox.conf
+chmod 644 $RPM_BUILD_ROOT/%{pfx}/etc/busybox.conf
 
 %Clean
 rm -rf $RPM_BUILD_ROOT
 
 %Files
 %defattr(-,root,root)
-%attr(4755,root,root) %{pfx}/%{base}/bin/busybox
+%attr(4755,root,root) %{pfx}/bin/busybox
 %{pfx}/*

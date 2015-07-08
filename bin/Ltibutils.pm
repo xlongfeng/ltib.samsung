@@ -690,6 +690,7 @@ then
 fi
 if [ "$pcf->{DEPLOYMENT_UBIFS}" = "y" ]
 then
+    rm -f $tdir/rootfs.ubifs
     rm -f $tdir/rootfs.ubifs.img
 fi
 if [ "$pcf->{DEPLOYMENT_CRAMFS}" = "y" ]
@@ -750,8 +751,10 @@ fi
 if [ "$pcf->{DEPLOYMENT_RM_DOCS}" = "y" ]
 then
     echo "removing man files and directories"
+    rm -rf $stage/usr/local/man
+    rm -rf $stage/usr/man
+	rm -rf $stage/usr/share/doc
     rm -rf $stage/usr/share/man
-    ####rm -rf $stage/usr/man
     echo "removing info files"
     rm -rf $stage/usr/info
 fi
@@ -819,6 +822,13 @@ then
        stripall -s $v $stage
     fi
 fi
+echo "removing useless firmwares"
+rm -rf $stage/lib/firmware/ar3k
+rm -rf $stage/lib/firmware/ath6k/AR6003/hw1.0
+rm -rf $stage/lib/firmware/ath6k/AR6003/hw2.0
+rm -rf $stage/lib/firmware/ath6k/AR6102
+rm -rf $stage/lib/firmware/sdma
+rm -rf $stage/lib/firmware/vpu
 TXT
 
     # calculate the size of the rootfs (based on calcs in buildroot)
@@ -907,7 +917,6 @@ then
 	-m $pcf->{DEPLOYMENT_MIN_I0_UNIT_SIZE} \\
 	-p $pcf->{DEPLOYMENT_PEB_SIZE} $ubinize_config_file
     rm $ubinize_config_file
-    rm $tdir/rootfs.ubifs
     ln -sf $tdir/rootfs.ubifs $tdir/rootfs_image
 fi
 if [ "$pcf->{DEPLOYMENT_CRAMFS}" = "y" ]

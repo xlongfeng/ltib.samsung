@@ -155,57 +155,10 @@ then
 	sys_login="::respawn:-/bin/sh"
     fi
 
-    cat <<EOF > $RPM_BUILD_ROOT/%{pfx}/etc/rc.d/rc_mxc.S
-#!/bin/bash
-#
-if grep -sq ttymxc0 /proc/cmdline; then
-	/sbin/getty -L ttymxc0 115200 vt100
-elif grep -sq ttymxc1 /proc/cmdline; then
-	/sbin/getty -L ttymxc1 115200 vt100
-elif grep -sq ttymxc2 /proc/cmdline; then
-	/sbin/getty -L ttymxc2 115200 vt100
-elif grep -sq ttymxc3 /proc/cmdline; then
-	/sbin/getty -L ttymxc3 115200 vt100
-else
-	sleep 100000
-fi
-EOF
-chmod +x $RPM_BUILD_ROOT/%{pfx}/etc/rc.d/rc_mxc.S
-
-cat <<EOF > $RPM_BUILD_ROOT/%{pfx}/etc/rc.d/rc_gpu.S
-#!/bin/bash
-CPUREV=\$(cat /proc/cpuinfo | grep Revision | awk '{print \$3}' | awk '{print substr(\$0,1,2)}')
-FILEVG=/usr/lib/libOpenVG.so
-FILEVG3D=/usr/lib/libOpenVG_3D.so
-FILEVG355=/usr/lib/libOpenVG_355.so
-echo 4 > /sys/module/galcore/parameters/gpu3DMinClock
-if  [ -e \$FILEVG3D ] && [ -e \$FILEVG355 ]
-then
-  if  [ \$CPUREV == "61" ] || [ \$CPUREV == "63" ] || [ \$CPUREV == "60" ] && [ -e  \$FILEVG ]
-  then
-        rm -f \$FILEVG
-  fi
-  if [ \$CPUREV == "61" ]
-  then
-        ln -s \$FILEVG3D \$FILEVG
-  fi
-  if [ \$CPUREV == "63" ]
-  then
-        ln -s \$FILEVG355 \$FILEVG
-  fi
-  if [ \$CPUREV == "60" ]
-  then
-        ln -s \$FILEVG355 \$FILEVG
-  fi
-fi
-EOF
-chmod +x $RPM_BUILD_ROOT/%{pfx}/etc/rc.d/rc_gpu.S
-
     cat <<EOF > $RPM_BUILD_ROOT/%{pfx}/etc/inittab
 # see busybox-1.00rc2/examples/inittab for more examples
 ::sysinit:/etc/rc.d/rcS
 $sys_login
-::sysinit:/etc/rc.d/rc_gpu.S
 ::ctrlaltdel:/sbin/reboot
 ::shutdown:/etc/rc.d/rcS stop
 ::restart:/sbin/init

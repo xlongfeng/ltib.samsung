@@ -1,0 +1,40 @@
+# stgit generated dirs
+patches-*
+
+# quilt's files
+patches
+series
+
+*.orig
+*.rej
+*~
+\#*#
+
+# Local configuration
+.*
+
+!.gitignore
+
+# Do track the ltibrc, or not?
+!/.ltibrc
+
+# rootfs and temp staging area
+/rootfs
+/rootfs.tmp
+
+# RPM storage and build area
+/rpm
+
+# temp dir
+/tmp
+
+# output files
+/host_config.log
+/initramfs.cpio.gz*
+/rootfs.ext2.gz*
+/cramfs.big
+/cramfs.little
+/rootfs.jffs2
+/rootfs.ubifs*
+/rootfs_image
+/RELEASE_INFO

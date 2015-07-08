@@ -2,7 +2,7 @@
 
 Summary         : Qt
 Name            : qt-everywhere-opensource-src
-Version         : 4.6.0
+Version         : 4.8.6
 Release         : 0
 License         : GNU GPL
 Vendor          : Freescale
@@ -11,7 +11,7 @@ Group           : System Environment/Libraries
 Source          : %{name}-%{version}.tar.gz
 BuildRoot       : %{_tmppath}/%{name}
 Prefix          : %{pfx}
-URL             : http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.0.tar.gz
+URL             : http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.8.6.tar.gz
 
 %Description
 %{summary}
@@ -19,22 +19,7 @@ URL             : http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src
 %Prep
 %setup
 
-#Checking what packages are available
-
-export XTRA_OPTS=""
-export XTRA_OPTS_CONFIG=""
-
-if [ -n "$PKG_QT_PHONON" ]
-then
-    export XTRA_OPTS="$XTRA_OPTS -multimedia -phonon -phonon-backend -lgstreamer-0.10"
-    export XTRA_OPTS_CONFIG="$XTRA_OPTS_CONFIG -lgstreamer-0.10 -lxml2 -lasound"
-fi
-
-#if PKG_AMD_GPU_BIN_MX51 is already installed, uncomment the following line to add OpenGLES 2 support
-#export XTRA_OPTS_CONFIG="$XTRA_OPTS_CONFIG -lGLESv2 -lEGL -lgsl -lc2d -lpanel2"
-
-#if PKG_MBX_BIN is already installed, uncomment the following line to add OpenGLES 1.1 support
-#export XTRA_OPTS_CONFIG="$XTRA_OPTS_CONFIG -lEGL -lEGL"
+#Creating mkspec
 
 mkdir mkspecs/qws/linux-g++-mx
 initscript=mkspecs/qws/linux-g++-mx/qmake.conf
@@ -84,7 +69,7 @@ QMAKE_LFLAGS_PLUGIN	+= \$\$QMAKE_LFLAGS_SHLIB
 QMAKE_LFLAGS_SONAME	+= -Wl,-soname,
 QMAKE_LFLAGS_THREAD	+=
 QMAKE_LFLAGS_NOUNDEF	+= -Wl,--no-undefined
-QMAKE_RPATH		= -Wl,-rpath,
+QMAKE_LFLAGS_RPATH	= -Wl,-rpath,
 
 QMAKE_PCH_OUTPUT_EXT    = .gch
 
@@ -180,10 +165,28 @@ export PATH=$UNSPOOF_PATH
 
 # Unset compiler to prevent gcc being used when the cross
 # tools should be used. (Trolltech issue# 138807)
-unset CC CXX
+unset CC CXX LD
 
 # Unset PLATFORM because this is used as host machine.
 unset PLATFORM
+
+#Checking what packages are available
+
+export XTRA_OPTS=""
+export XTRA_OPTS_CONFIG=""
+
+if [ -n "$PKG_QT_PHONON" ]
+then
+    export XTRA_OPTS="$XTRA_OPTS -multimedia -phonon -phonon-backend -lgstreamer-0.10"
+    export XTRA_OPTS_CONFIG="$XTRA_OPTS_CONFIG -lgstreamer-0.10 -lxml2 -lasound"
+fi
+
+#if PKG_AMD_GPU_BIN_MX51 is already installed, uncomment the following line to add OpenGLES 2 support
+#export XTRA_OPTS_CONFIG="$XTRA_OPTS_CONFIG -lGLESv2 -lEGL -lgsl -lc2d -lpanel2"
+
+#if PKG_MBX_BIN is already installed, uncomment the following line to add OpenGLES 1.1 support
+#export XTRA_OPTS_CONFIG="$XTRA_OPTS_CONFIG -lEGL -lEGL"
+
 
 #if PKG_AMD_GPU_BIN_MX51 is already installed, uncomment the following line to add OpenGLES 2 support
 #export XTRA_OPTS="$XTRA_OPTS -opengl es2"
@@ -191,19 +194,45 @@ unset PLATFORM
 #if PKG_MBX_BIN is already installed, uncomment the following line to add OpenGLES 1.1 support
 #export XTRA_OPTS="$XTRA_OPTS -opengl es1"
 
-./configure --prefix=$RPM_BUILD_DIR/../../rootfs/usr/local/Trolltech -embedded arm -xplatform qws/linux-g++-mx -release \
-	-qt-gfx-linuxfb -qt-kbd-tty -qt-mouse-tslib -little-endian -host-little-endian -fontconfig -sm -v -opensource -confirm-license $XTRA_OPTS
+THIRD_PARTY_LIBRARIES='-no-libtiff -no-libmng -no-libjpeg'
+
+ADDITIONAL_OPTIONS='-nomake tools -nomake examples -nomake demos -nomake docs -nomake translations -silent -no-nis -no-cups -no-iconv -no-pch -no-dbus -no-separate-debug-info'
+
+QT_FOR_EMBEDDED_LINUX='-embedded arm -xplatform qws/linux-g++-mx -no-armfpa -little-endian -host-little-endian -qconfig dist -depths 16'
+
+./configure --prefix=%{_prefix} \
+	-release \
+	-opensource \
+	-confirm-license \
+	-shared \
+	-fast \
+	-v \
+	-no-largefile \
+	-no-qt3support \
+	-no-xmlpatterns \
+	-no-multimedia \
+	-no-audio-backend \
+	-no-phonon \
+	-no-phonon-backend \
+	-no-svg \
+	-no-webkit \
+	-no-javascript-jit \
+	-no-script \
+	-no-scripttools \
+	-no-declarative \
+	-no-declarative-debug \
+	$THIRD_PARTY_LIBRARIES \
+	$ADDITIONAL_OPTIONS \
+	$QT_FOR_EMBEDDED_LINUX \
+	$XTRA_OPTS
 
 make
 
 %Install
 
 export PATH=$UNSPOOF_PATH
-install -d $RPM_BUILD_ROOT/%{pfx}/usr/local/Trolltech
 install -d $RPM_BUILD_ROOT/%{pfx}/usr/lib
 
-cp -a demos $RPM_BUILD_ROOT/%{pfx}/usr/local/Trolltech
-cp -a examples $RPM_BUILD_ROOT/%{pfx}/usr/local/Trolltech
 cp -a lib/* $RPM_BUILD_ROOT/%{pfx}/usr/lib
 
 export PATH=$SPOOF_PATH
