@@ -721,7 +721,7 @@ $echo rm -f $cf->{logfile} $cf->{lock_file} $cf->{root_cf}
 $echo rm -f $cf->{config_dir}/main.lkc
 $echo rm -f .host_wait_warning* .tc_test_*
 $echo rm -f $cf->{rpmdb_nfs_warning} $cf->{release_info}
-$echo rm -f rootfs.jffs2 rootfs.ext2.gz rootfs_image
+$echo rm -f rootfs.jffs2 rootfs.ext2.gz rootfs_image rootfs.ubifs rootfs.ubifs.img
 $echo rm -rf rootfs.tmp
 $echo rm -f config/platform/host/host.config
 $echo find $cf->{platforms_dir} \\( -name *.dev -o -name *.bak \\) -exec rm {} \\;
