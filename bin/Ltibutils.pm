@@ -825,6 +825,9 @@ then
 fi
 echo "removing redundant files"
 
+rm -rf $stage/boot/vmlinux
+rm -rf $stage/boot/zImage
+
 rm -rf $stage/lib/firmware/ar3k
 rm -rf $stage/lib/firmware/ath6k/AR6003/hw1.0
 rm -rf $stage/lib/firmware/ath6k/AR6003/hw2.0
