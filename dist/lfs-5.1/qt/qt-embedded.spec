@@ -175,7 +175,6 @@ ADDITIONAL_OPTIONS=" \
 	-no-nis \
 	-no-cups \
 	-no-iconv \
-	-no-evdev \
 	-no-icu \
 	-no-fontconfig \
 	-no-use-gold-linker \
