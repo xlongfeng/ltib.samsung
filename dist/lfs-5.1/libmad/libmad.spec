@@ -9,7 +9,6 @@ Vendor          : Freescale
 Packager        : Ross Wille
 Group           : System Environment/Libraries
 Source          : libmad-0.15.1b.tar.gz
-Patch1          : libmad-0.15.1b-gcc-4.3.patch
 BuildRoot       : %{_tmppath}/%{name}
 Prefix          : %{pfx}
 
@@ -18,7 +17,6 @@ Prefix          : %{pfx}
 
 %Prep
 %setup -n libmad-0.15.1b
-%patch1 -p1
 
 %Build
 ./configure --prefix=%{_prefix} --host=$CFGHOST --build=%{_build} --mandir=%{_mandir}

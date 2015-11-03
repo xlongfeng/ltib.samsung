@@ -196,11 +196,19 @@ cat <<'EOF' > $RPM_BUILD_ROOT/%{pfx}/etc/rc.d/rc.local
 #
 # This script will be executed *after* all the other init scripts.
 # You can put your own initialization stuff in here
+
+mode=${1:-start}
+
 if [ -x "/usr/bin/rpm" -a -e "/tmp/ltib" ]
 then
     echo "rebuilding rpm database"
     rm -rf /tmp/ltib
     rpm --rebuilddb
+fi
+
+if [ ! -d /home/user ]
+then
+    mkdir /home/user
 fi
 
 # fix up permissions
@@ -250,6 +258,11 @@ if [ ! -f /usr/var/lib/dbus/machine-id ]
 then
     echo "Generating machine id for dbus"
     dbus-uuidgen --ensure=/usr/var/lib/dbus/machine-id
+fi
+
+if [ -x /home/user/rc.user ]
+then
+    /home/user/rc.user $mode &
 fi
 
 EOF

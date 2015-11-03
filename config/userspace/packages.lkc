@@ -97,7 +97,6 @@ config PKG_ALSA_LIB
 
 config PKG_ALSA_UTILS
     select PKG_ALSA_LIB
-    select PKG_NCURSES
     bool "alsa-utils"
     help
        This package contains the command line utilities for the ALSA project.
@@ -983,7 +982,6 @@ config PKG_FMTOOLS
 
 config PKG_FONTCONFIG
    depends CAP_HAS_MMU
-   select PKG_EXPAT
    select PKG_FREETYPE
    select PKG_ZLIB
    bool "fontconfig"
@@ -2619,10 +2617,8 @@ choice
         bool "Do not install Qt"
     config PKG_QT_EMBEDDED
         depends CAP_HAS_MMU
+        select PKG_DBUS
         select PKG_TSLIB
-        select PKG_ZLIB
-        select PKG_FONTCONFIG
-        select PKG_GLIB2
         select PKG_ZLIB
         bool "Qt Embedded"
         help

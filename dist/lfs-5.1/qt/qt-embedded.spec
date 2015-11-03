@@ -23,7 +23,7 @@ URL             : http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src
 
 XPLATFORM=qtbase/mkspecs/linux-none-arm-gnueabi-g++
 
-mkdir $XPLATFORM
+mkdir -p $XPLATFORM
 
 initscript=$XPLATFORM/qmake.conf
 cat > $initscript << EOF
@@ -38,6 +38,12 @@ QMAKE_INCREMENTAL_STYLE = sublib
 include(../common/linux.conf)
 include(../common/gcc-base-unix.conf)
 include(../common/g++-unix.conf)
+
+# modifications to linux.conf
+QMAKE_INCDIR          = $RPM_BUILD_DIR/../../rootfs/usr/include \
+			$RPM_BUILD_DIR/../../rootfs/usr/include/freetype2
+QMAKE_LIBDIR          = $RPM_BUILD_DIR/../../rootfs/usr/lib
+QMAKE_LIBS            = -lglib-2.0 -lgthread-2.0 -lgmodule-2.0 -lgobject-2.0 -lz -lpng
 
 # modifications to g++.conf
 QMAKE_CC                = arm-none-linux-gnueabi-gcc
@@ -61,6 +67,12 @@ EOF
 %Build
 
 export PATH=$UNSPOOF_PATH
+export PKG_CONFIG_LIBDIR=${DEV_IMAGE}%{_prefix}/lib/pkgconfig
+export PKG_CONFIG_SYSROOT_DIR=${DEV_IMAGE}
+export PKG_CONFIG_ALLOW_SYSTEM_LIBS=1
+export PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1
+export PKG_CONFIG_PATH=${DEV_IMAGE}%{_prefix}/lib/pkgconfig
+export PKG_CONFIG_SYSROOT_DIR=${DEV_IMAGE}
 
 # Unset compiler to prevent gcc being used when the cross
 # tools should be used. (Trolltech issue# 138807)
@@ -95,7 +107,6 @@ SKIP_MODULES=" \
 	-skip qtxmlpatterns \
 	-skip qtdeclarative \
 	-skip qtquickcontrols \
-	-skip qtmultimedia \
 	-skip qtwinextras \
 	-skip qtactiveqt \
 	-skip qtlocation \
@@ -196,6 +207,12 @@ make
 export PATH=$UNSPOOF_PATH
 
 make install INSTALL_ROOT=$RPM_BUILD_ROOT/%{pfx}
+
+qt_conf=$RPM_BUILD_ROOT/%{pfx}/usr/bin/qt.conf
+cat > $qt_conf << EOF
+[Paths]
+Prefix=..
+EOF
 
 export PATH=$SPOOF_PATH
 

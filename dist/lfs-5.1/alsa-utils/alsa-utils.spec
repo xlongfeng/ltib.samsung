@@ -36,7 +36,7 @@ eval $config_opts \
 ./configure --prefix=%{_prefix} --host=$CFGHOST --build=%{_build} -C --disable-shared
 else
 eval $config_opts \
-./configure --prefix=%{_prefix} --host=$CFGHOST --build=%{_build} -C --disable-xmlto --with-curses=ncurses
+./configure --prefix=%{_prefix} --host=$CFGHOST --build=%{_build} -C --disable-alsatest --disable-alsamixer --disable-alsaconf --disable-alsaloop --disable-xmlto
 fi
 make
 

@@ -805,6 +805,9 @@ if [ "$pcf->{DEPLOYMENT_RM_STATIC_LIBS}" = "y" ]
 then
     echo "removing static libraries"
     find $stage -name \\*.a -exec rm -f {} \\;
+    find $stage -name \\*.la -exec rm -f {} \\;
+    find $stage -name \\*.pri -exec rm -f {} \\;
+    find $stage -name \\*.prl -exec rm -f {} \\;
 fi
 RPMDB=`echo $pcf->{DEPLOYMENT_RM_RPMDB}`
 if [ "\$RPMDB" != "" -a  -d $stage/\$RPMDB ]
@@ -843,7 +846,13 @@ rm -rf $stage/usr/bin/qlalr
 rm -rf $stage/usr/bin/qmake
 rm -rf $stage/usr/bin/rcc
 rm -rf $stage/usr/bin/uic
+rm -rf $stage/usr/lib/cmake
 rm -rf $stage/usr/mkspecs
+
+echo "adding update files"
+cp -a $tdir/app/fstab $stage/etc
+cp -a $tdir/app/ukai.ttc $stage/usr/lib/fonts
+cp -a $tdir/app/alsa.conf $stage/usr/share/alsa
 
 TXT
 
