@@ -850,7 +850,6 @@ rm -rf $stage/usr/lib/cmake
 rm -rf $stage/usr/mkspecs
 
 echo "adding update files"
-cp -a $tdir/app/fstab $stage/etc
 cp -a $tdir/app/ukai.ttc $stage/usr/lib/fonts
 cp -a $tdir/app/alsa.conf $stage/usr/share/alsa
 

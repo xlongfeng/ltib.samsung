@@ -19,6 +19,8 @@ URL             : http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src
 %Prep
 %setup
 
+touch .keepme
+
 #Creating mkspec
 
 XPLATFORM=qtbase/mkspecs/linux-none-arm-gnueabi-g++
