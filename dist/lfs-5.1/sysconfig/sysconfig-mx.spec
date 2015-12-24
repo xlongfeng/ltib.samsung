@@ -206,17 +206,6 @@ then
     rpm --rebuilddb
 fi
 
-if [ ! -d /home/user ]
-then
-    mkdir /home/user
-fi
-
-# fix up permissions
-if [ -d /home/user ]
-then
-    chown -R user.user /home/user
-fi
-
 # Add nodes when running under the hypervisor and static devices
 if [ -r /sys/class/misc/fsl-hv/dev -a ! -r /dev/fsl-hv ]
 then
@@ -260,9 +249,9 @@ then
     dbus-uuidgen --ensure=/usr/var/lib/dbus/machine-id
 fi
 
-if [ -x /home/user/rc.user ]
+if [ -x /home/rcS ]
 then
-    /home/user/rc.user $mode &
+    /home/rcS $mode &
 fi
 
 EOF
